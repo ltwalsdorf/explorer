@@ -4,12 +4,7 @@ console.log("STARTED...");
 let logElement;
 let playerUsername;
 let initialPlacementMade = false;
-const startingResourcesSnippet = "received starting resources";
 const receivedResourcesSnippet = "got";
-const boughtSnippet = "bought";
-const discardedSnippet = "discarded";
-const stoleFromYouSnippet = "You stole";
-const youStoleSnippet = "from you";
 
 const wood = "wood";
 const stone = "stone";
@@ -310,6 +305,7 @@ function parseBuiltMessage(pElement) {
  * Process a "bought" message: [user icon] [user] built
  */
 function parseBoughtMessage(pElement) {
+  const boughtSnippet = "bought";
   const textContent = pElement.textContent;
   if (!textContent.includes(boughtSnippet)) {
     return;
@@ -464,6 +460,7 @@ function parseStoleAllOfMessage(pElement) {
  * When the user has to discard cards because of a robber.
  */
 function parseDiscardedMessage(pElement) {
+  const discardedSnippet = "discarded";
   const textContent = pElement.textContent;
   if (!textContent.includes(discardedSnippet)) {
     return;
@@ -546,6 +543,8 @@ function parseTradedMessage(pElement, prevElement) {
 }
 
 function isKnownSteal(textContent) {
+  const stoleFromYouSnippet = "You stole";
+  const youStoleSnippet = "from you";
   return textContent.includes(stoleFromYouSnippet) || textContent.includes(youStoleSnippet);
 }
 
@@ -774,7 +773,7 @@ function parseLatestMessages() {
   const allMessages = getAllMessages();
   const newOffset = allMessages.length;
   const newMessages = allMessages.slice(MSG_OFFSET);
-  if (newMessages.length == 0) {return;}
+  if (newMessages.length === 0) {return;}
 
   const prevMessages = allMessages.slice(MSG_OFFSET - 1, -1);
 
@@ -794,6 +793,7 @@ function startWatchingMessages() {
 * Log initial resource distributions.
 */
 function tallyInitialResources() {
+  const startingResourcesSnippet = "received starting resources";
   const allMessages = getAllMessages();
   MSG_OFFSET = allMessages.length;
   allMessages.forEach(pElement => parseGotMessageHelper(pElement, startingResourcesSnippet));
